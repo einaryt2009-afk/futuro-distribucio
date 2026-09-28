@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El futuro de la distribución</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f7ff;color:#17233c}.hero{background:linear-gradient(135deg,#0757d9,#39a9ff);color:white;text-align:center;padding:55px 20px}.hero h1{font-size:clamp(2rem,5vw,3.5rem);margin:0 0 12px}.hero p{font-size:1.15rem}.wrap{max-width:1050px;margin:auto;padding:30px 18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}.card{background:white;border-radius:18px;padding:22px;box-shadow:0 5px 18px #00000012;cursor:pointer;transition:.2s}.card:hover{transform:translateY(-4px)}.emoji{font-size:2.3rem}.card h2{margin:10px 0 8px}.details{margin:24px 0;padding:24px;border-radius:18px;background:#e7f1ff;display:none}.details.show{display:block}.quiz{margin-top:35px;background:white;border-radius:20px;padding:25px;box-shadow:0 5px 18px #00000012}.q{border-top:1px solid #ddd;padding:18px 0}.q:first-child{border-top:0}.option{display:block;margin:8px 0;padding:11px 14px;border:1px solid #ccd6e6;border-radius:10px;background:white;cursor:pointer;text-align:left}.option:hover{background:#edf5ff}.feedback{font-weight:bold;margin-top:8px}.score{font-size:1.3rem;font-weight:bold;margin-top:18px}.tag{display:inline-block;background:#dcecff;color:#0757d9;border-radius:20px;padding:6px 10px;margin:3px;font-size:.9rem}footer{text-align:center;padding:30px;color:#61708c}
+</style>
+</head>
+<body>
+<header class="hero"><h1>🚀 El futuro de la distribución</h1><p>Descubre cómo la tecnología está cambiando la forma de comprar y vender.</p></header>
+<main class="wrap">
+<div id="tags"></div>
+<section class="grid" id="cards"></section>
+<section class="details" id="details"></section>
+<section class="quiz"><h2>🧠 ¿Cuánto sabes?</h2><p>Responde y comprueba al instante si has acertado.</p><div id="quiz"></div><div class="score" id="score"></div></section>
+</main>
+<footer>Proyecto sobre nuevas tendencias en la distribución · Escanea el QR desde tu presentación</footer>
+<script>
+const trends=[
+["🥽","Metaverso","Espacios virtuales inmersivos para mostrar productos y crear experiencias.","El cliente entra en un entorno virtual e interactúa con productos o marcas.","Nike ha utilizado experiencias virtuales y mundos digitales para conectar con consumidores."],
+["📱","Realidad aumentada","Permite visualizar productos virtualmente sobre el entorno real.","La cámara del móvil superpone información o modelos 3D.","IKEA Place permite visualizar muebles en una habitación antes de comprarlos."],
+["🖥️","Pantallas interactivas","Pantallas táctiles que permiten consultar productos, características o servicios.","El cliente toca la pantalla y navega por catálogos o información.","Tiendas utilizan kioscos interactivos para consultar tallas, colores y características."],
+["🔳","Códigos QR","Códigos que conectan el espacio físico con contenido digital.","Se escanean con el móvil y abren una web, promoción, ficha de producto o menú.","Los comercios usan QR para promociones, información de producto y pagos."],
+["🛒","Autocajas","Sistemas que permiten al cliente escanear y pagar sin pasar por una caja tradicional.","El cliente escanea sus productos, realiza el pago y finaliza la compra.","Grandes supermercados utilizan cajas de autoservicio para agilizar el cobro."],
+["📲","Apps","Aplicaciones móviles para comprar, consultar productos, recibir ofertas y gestionar pedidos.","La app conecta al cliente con la tienda digital y servicios personalizados.","Las apps de supermercados permiten comprar online, usar cupones y consultar pedidos."],
+["🔄","Omnicanalidad","Integra los canales físicos y digitales para ofrecer una experiencia conectada.","El cliente puede cambiar de canal, por ejemplo comprar online y recoger en tienda.","Click & collect permite comprar por internet y recoger el pedido en una tienda."],
+["💡","Cartelería digital","Pantallas que muestran contenido publicitario o informativo que puede actualizarse rápidamente.","Un sistema central cambia los contenidos de las pantallas según horario, lugar o campaña.","Tiendas y centros comerciales usan pantallas digitales para promociones y orientación."]
+];
+const cards=document.getElementById("cards"),details=document.getElementById("details"),tags=document.getElementById("tags");
+trends.forEach((t,i)=>{tags.innerHTML+=`<span class="tag">${t[1]}</span>`;cards.innerHTML+=`<article class="card" onclick="show(${i})"><div class="emoji">${t[0]}</div><h2>${t[1]}</h2><p>${t[2]}</p></article>`});
+function show(i){let t=trends[i];details.innerHTML=`<h2>${t[0]} ${t[1]}</h2><p><b>¿Qué es?</b> ${t[2]}</p><p><b>¿Cómo funciona?</b> ${t[3]}</p><p><b>🌍 Ejemplo real:</b> ${t[4]}</p>`;details.classList.add("show");details.scrollIntoView({behavior:"smooth",block:"center"})}
+const questions=[
+["Un cliente usa la cámara del móvil para ver cómo quedaría un sofá en su salón.","Realidad aumentada"],
+["Un cliente escanea un código para acceder a información digital.","Códigos QR"],
+["Una persona compra online y recoge el pedido en una tienda.","Omnicanalidad"],
+["El cliente escanea y paga sus propios productos.","Autocajas"],
+["Una pantalla táctil permite consultar tallas y características.","Pantallas interactivas"],
+["Un usuario entra en un entorno virtual inmersivo de una marca.","Metaverso"]
+];
+let correct=0;
+questions.forEach((q,i)=>{const d=document.createElement("div");d.className="q";d.innerHTML=`<h3>${i+1}. ${q[0]}</h3>`;trends.forEach(t=>{const b=document.createElement("button");b.className="option";b.textContent=t[1];b.onclick=()=>answer(b,q[1],i);d.appendChild(b)});const f=document.createElement("div");f.className="feedback";f.id="f"+i;d.appendChild(f);document.getElementById("quiz").appendChild(d)});
+function answer(btn,right,i){const f=document.getElementById("f"+i);const buttons=btn.parentElement.querySelectorAll(".option");buttons.forEach(b=>b.disabled=true);if(btn.textContent===right){f.textContent="✅ ¡Correcto!";correct++}else f.textContent="❌ Incorrecto. La respuesta correcta es: "+right;document.getElementById("score").textContent="Puntuación: "+correct+" / "+questions.length}
+</script>
+</body></html>
